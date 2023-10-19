@@ -17,9 +17,11 @@ namespace LoopingAudioConverter.VGAudioOptions {
 
 		public ulong? KeyCode { get; set; }
 
+		public ushort? AwbHash { get; set; }
+
 		public override HcaConfiguration Configuration => new HcaConfiguration {
 			Bitrate = Bitrate,
-			EncryptionKey = KeyCode is ulong u ? new CriHcaKey(u) : null,
+			EncryptionKey = KeyCode is ulong k ? new CriHcaKey(AwbHash is ushort h ? k * (((ulong)h << 16) | (ushort)(~h + 2)) : k) : null,
 			LimitBitrate = LimitBitrate,
 			TrimFile = TrimFile,
 			Quality = Quality
